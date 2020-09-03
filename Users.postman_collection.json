@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "6bc04e55-98a0-4384-ab75-19d240c59d3a",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/user/get",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "71317514-df33-4db0-9164-4dab2430d648",
+						"exec": [
+							"pm.test(\"Request is successfull with a status code of 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check that it returns an array\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an('array');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/user/get",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"user",
+						"get"
+					]
+				},
+				"description": "Fetches the list of users"
+			},
+			"response": []
+		},
+		{
+			"name": "/user/create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "40e4a9f5-2a7a-4606-a296-2f665e27e92f",
+						"exec": [
+							"pm.test(\"User creation was successfull\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Confirm response message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql(\"User Successully created\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fc3275c4-86ca-4206-b3b6-6ba2efa0c802",
+						"exec": [
+							"let random = + new Date();",
+							"",
+							"pm.globals.set(\"username\", `${random}-user`)",
+							"pm.globals.set(\"email\", `${random}-user@test.com`)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "{{email}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url}}/user/create",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"user",
+						"create"
+					]
+				},
+				"description": "Creates a new user"
+			},
+			"response": []
+		}
+	]
+}
