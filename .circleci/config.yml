@@ -7,6 +7,5 @@ jobs:
     steps:
       - checkout
       - newman/newman-run:
-          name: "Run API Tests"
           collection: ./Users.postman_collection.json
           environment: ./My-Remote-API-Testing.postman_environment.json
